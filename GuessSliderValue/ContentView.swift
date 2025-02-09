@@ -19,7 +19,7 @@ struct ContentView: View {
             HStack {
                 Text("0")
                 
-                SliderRepresentation(
+                UISliderRepresentation(
                     value: $contentViewVM.sliderValue,
                     opacity: contentViewVM.sliderOpacity
                 )
@@ -27,18 +27,18 @@ struct ContentView: View {
                 Text("100")
             }
             
-            
             ButtonView.init(title: "Проверь меня!", action: contentViewVM.tryIt)
-            ButtonView(title: "Начать заново", action: contentViewVM.restart)
-            
-        }
-        .alert(isPresented: $contentViewVM.showAlert) {
+                .alert(isPresented: $contentViewVM.showAlert) {
                     Alert(
                         title: Text("Результат"),
                         message: Text("Ваши очки: \(contentViewVM.score)"),
                         dismissButton: .default(Text("OK"))
                     )
                 }
+            
+            ButtonView(title: "Начать заново", action: contentViewVM.restart)
+            
+        }
         .padding()
     }
 }

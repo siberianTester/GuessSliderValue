@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct SliderRepresentation: UIViewRepresentable {
+struct UISliderRepresentation: UIViewRepresentable {
     @Binding var value: Float
-    var opacity: Double
+    let opacity: Double
     
     func makeUIView(context: Context) -> UISlider {
         let slider = UISlider()
@@ -21,36 +21,36 @@ struct SliderRepresentation: UIViewRepresentable {
         
         slider.addTarget(
             context.coordinator,
-            action: #selector(Coordinator.valueChanged(_:)),
+            action: #selector(Coordinator.valueChanged),
             for: .valueChanged
         )
         return slider
     }
     
     func updateUIView(_ uiView: UISlider, context: Context) {
-        uiView.value = value
-        uiView.alpha = CGFloat(Float(opacity))
+        uiView.value = Float(value)
+        uiView.alpha = CGFloat(opacity)
     }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(parent: self)
+        Coordinator(value: $value)
     }
 }
 
-extension SliderRepresentation {
+extension UISliderRepresentation {
     final class Coordinator: NSObject {
-        var parent: SliderRepresentation
+        @Binding var value: Float
         
-        init(parent: SliderRepresentation) {
-            self.parent = parent
+        init(value: Binding<Float>) {
+            self._value = value
         }
         
         @objc func valueChanged(_ sender: UISlider) {
-            parent.value = sender.value
+            value = sender.value
         }
     }
 }
 
 #Preview {
-//    SliderRepresentation()
+    UISliderRepresentation(value: .constant(50), opacity: 1)
 }
